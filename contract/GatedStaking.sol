@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 contract GatedStaking{
@@ -12,7 +12,6 @@ contract GatedStaking{
     constructor(){
         owner = msg.sender;
     }
-
 
     struct stakeInfo{
         address staker;
@@ -41,6 +40,7 @@ contract GatedStaking{
 
     function withdraw(address _tokenAddress, uint _amount) public{
         stakeInfo storage ST = usersStake[msg.sender][_tokenAddress];
+        //require(ST.timeStaked > 0, "You have no staked token here");
         require(ST.amountStaked > _amount, "insufficient balance");
         uint interest = _interestGotten(_tokenAddress);
         ST.amountStaked -= _amount;
@@ -61,6 +61,16 @@ contract GatedStaking{
         }
         return interest;
     }
+
+    // function showInterest(address _tokenAddress) external view returns(uint){
+    //     uint interest = _interestGotten(_tokenAddress);
+    //     return interest;
+    // }
+
+    // function amountStaked(address _tokenAddress) external view returns(uint){
+    //     stakeInfo storage ST = usersStake[msg.sender][_tokenAddress];
+    //     return  ST.amountStaked;
+    // }
 
 }
 
