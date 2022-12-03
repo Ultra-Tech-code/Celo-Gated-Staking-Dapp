@@ -6,6 +6,7 @@ contract GatedStaking{
     uint constant rate = 3854;
     uint256 constant factor = 1e11;
     address owner;
+    uint stakeNumber;
 
     address constant cUSDAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
@@ -35,6 +36,8 @@ contract GatedStaking{
         ST.amountStaked = _amount;
         ST.tokenStaked = _tokenAddress;
         ST.timeStaked = block.timestamp;
+
+        stakeNumber +=1;
     }
 
 
@@ -62,15 +65,19 @@ contract GatedStaking{
         return interest;
     }
 
-    // function showInterest(address _tokenAddress) external view returns(uint){
-    //     uint interest = _interestGotten(_tokenAddress);
-    //     return interest;
-    // }
+    function showInterest(address _tokenAddress) external view returns(uint){
+        uint interest = _interestGotten(_tokenAddress);
+        return interest;
+    }
 
-    // function amountStaked(address _tokenAddress) external view returns(uint){
-    //     stakeInfo storage ST = usersStake[msg.sender][_tokenAddress];
-    //     return  ST.amountStaked;
-    // }
+    function amountStaked(address _tokenAddress) external view returns(uint){
+        stakeInfo storage ST = usersStake[msg.sender][_tokenAddress];
+        return  ST.amountStaked;
+    }
+
+    function numberOfStakers() public view returns(uint){
+        return stakeNumber;
+    }
 
 }
 
